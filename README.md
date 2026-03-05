@@ -1,81 +1,81 @@
 # Zulip Attachment Cleanup
 
-Tool per liberare spazio eliminando i file caricati su Zulip Cloud.
+A command-line tool to free up storage space by deleting files you uploaded to Zulip Cloud.
 
 ---
 
-## Cosa fa
+## What it does
 
-Lo script si connette alla tua istanza Zulip tramite API, elenca tutti i file che hai caricato e ti permette di eliminarli selettivamente per recuperare spazio nello storage dell'organizzazione.
+The script connects to your Zulip instance via API, lists all files you have uploaded, and lets you selectively delete them to recover storage space in your organization.
 
-- Mostra dimensione, data e stato di ogni file (libero o referenziato in messaggi)
-- Ordina i file per dimensione (i più grandi prima)
-- Offre modalità di eliminazione: tutti, solo liberi, o selezione manuale
-- Chiede sempre conferma prima di procedere
+- Shows size, date and status of each file (free or still referenced in messages)
+- Sorts files by size (largest first)
+- Offers deletion modes: all, only unreferenced, or manual selection
+- Always asks for confirmation before proceeding
 
 ---
 
-## Requisiti
+## Requirements
 
 - Python 3.x
-- Modulo `requests` (installato automaticamente da `INSTALLA_E_AVVIA.bat`)
-- File `zuliprc` con le tue credenziali API Zulip
+- `requests` module (auto-installed by `INSTALLA_E_AVVIA.bat` on Windows)
+- A `zuliprc` file with your Zulip API credentials
 
 ---
 
-## Utilizzo su Windows (metodo semplice)
+## Usage
 
-1. **Disattiva l'alias Python di Windows** (obbligatorio su Windows 11):
-   - Impostazioni → App → Advanced app settings → App execution aliases
-   - Metti su **OFF** sia `python.exe` che `python3.exe`
-
-2. **Scarica il file `zuliprc`** con le tue credenziali:
-   - Zulip → Impostazioni personali → Account & privacy → API key → Download .zuliprc
-   - Salva il file nella stessa cartella dello script
-   - Rinominalo esattamente `zuliprc` (senza punto iniziale, senza estensione)
-
-3. **Fai doppio clic su `INSTALLA_E_AVVIA.bat`**
-
-   Il batch installa Python e le dipendenze automaticamente se necessario, poi avvia lo script.
-
----
-
-## Utilizzo da riga di comando
+### Command line (all platforms)
 
 ```bash
 pip install requests
 python zulip_cleanup_attachments.py
 ```
 
----
+### Windows (easy launcher)
 
-## Opzioni di pulizia
+1. **Disable the Windows Python alias** (required on Windows 11):
+   - Settings → Apps → Advanced app settings → App execution aliases
+   - Turn **OFF** both `python.exe` and `python3.exe`
 
-| Opzione | Cosa fa |
-|---------|---------|
-| **[A]** | Elimina tutti i file (anche quelli referenziati nei messaggi) |
-| **[L]** | Elimina solo i file non collegati a messaggi |
-| **[S]** | Selezione manuale file per file |
-| **[Q]** | Esci senza eliminare nulla |
+2. **Download your `zuliprc`** credentials file:
+   - Zulip → Personal settings → Account & privacy → API key → Download .zuliprc
+   - Save the file in the same folder as the script
+   - Rename it exactly `zuliprc` (no leading dot, no extension)
 
-> **Attenzione:** l'eliminazione è permanente. I link nei messaggi che puntano a file eliminati risulteranno rotti.
+3. **Double-click `INSTALLA_E_AVVIA.bat`**
 
----
-
-## Sicurezza
-
-- Il file `zuliprc` contiene la tua API key personale — **non condividerlo mai**
-- Lo script elimina **solo** i file dell'utente autenticato
-- Per una pulizia completa dell'organizzazione, ogni membro deve eseguire lo script con le proprie credenziali
+   The launcher installs Python and dependencies automatically if needed, then runs the script.
 
 ---
 
-## Struttura del progetto
+## Deletion options
+
+| Option | Action |
+|--------|--------|
+| **[A]** | Delete all files (including those referenced in messages) |
+| **[L]** | Delete only files not linked to any message |
+| **[S]** | Select files one by one |
+| **[Q]** | Quit without deleting anything |
+
+> **Warning:** deletion is permanent. Message links pointing to deleted files will break.
+
+---
+
+## Security
+
+- The `zuliprc` file contains your personal API key — **never share it**
+- The script only deletes files belonging to the authenticated user
+- For a full organization cleanup, each member must run the script with their own credentials
+
+---
+
+## Project structure
 
 ```
 zulip_cleanup/
-  ├── zulip_cleanup_attachments.py   # script principale
-  ├── INSTALLA_E_AVVIA.bat           # launcher Windows
-  ├── ISTRUZIONI_UTENTI.md           # guida dettagliata per utenti non tecnici
-  └── zuliprc                        # credenziali API (non incluso nel repo)
+  ├── zulip_cleanup_attachments.py   # main script
+  ├── INSTALLA_E_AVVIA.bat           # Windows launcher
+  ├── ISTRUZIONI_UTENTI.md           # detailed guide in Italian for non-technical users
+  └── zuliprc                        # API credentials (not included in repo)
 ```
